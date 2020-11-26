@@ -14,9 +14,21 @@
       <e p="Controllers" t="Include">
         <e p="HomeController.cs" t="Include" />
       </e>
-      <e p="Models" t="Include">
-        <e p="ErrorViewModel.cs" t="Include" />
+      <e p="Migrations" t="Include">
+        <e p="20201126171909_initial-create.cs" t="Include" />
+        <e p="20201126171909_initial-create.Designer.cs" t="Include" />
+        <e p="BugzillaDbContextModelSnapshot.cs" t="Include" />
       </e>
+      <e p="Models" t="Include">
+        <e p="Bug.cs" t="Include" />
+        <e p="BugzillaDbContext.cs" t="Include" />
+        <e p="Developer.cs" t="Include" />
+        <e p="ErrorViewModel.cs" t="Include" />
+        <e p="Fix.cs" t="Include" />
+        <e p="Review.cs" t="Include" />
+        <e p="Role.cs" t="Include" />
+      </e>
+      <e p="mysql-phpmyadmin.yml" t="Include" />
       <e p="obj" t="ExcludeRecursive">
         <e p="Debug" t="Include">
           <e p="netcoreapp3.1" t="Include">
