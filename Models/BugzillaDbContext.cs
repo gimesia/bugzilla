@@ -9,11 +9,11 @@ namespace bugzilla.Models
                 
         }
         
-        private DbSet<Developer> Developers { get; set; }
-        private DbSet<Role> Roles { get; set; }
-        private DbSet<Bug> Bugs { get; set; }
-        private DbSet<Fix> Fixes { get; set; }
-        private DbSet<Review> Reviews { get; set; }
+        public DbSet<Developer> Developers { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Bug> Bugs { get; set; }
+        public DbSet<Fix> Fixes { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

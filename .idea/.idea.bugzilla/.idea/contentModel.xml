@@ -12,11 +12,12 @@
       <e p="bugzilla.csproj" t="IncludeRecursive" />
       <e p="bugzilla.sln" t="IncludeFlat" />
       <e p="Controllers" t="Include">
+        <e p="DeveloperController.cs" t="Include" />
         <e p="HomeController.cs" t="Include" />
       </e>
       <e p="Migrations" t="Include">
-        <e p="20201126171909_initial-create.cs" t="Include" />
-        <e p="20201126171909_initial-create.Designer.cs" t="Include" />
+        <e p="20201126224102_InitialCreate.cs" t="Include" />
+        <e p="20201126224102_InitialCreate.Designer.cs" t="Include" />
         <e p="BugzillaDbContextModelSnapshot.cs" t="Include" />
       </e>
       <e p="Models" t="Include">
@@ -27,6 +28,7 @@
         <e p="Fix.cs" t="Include" />
         <e p="Review.cs" t="Include" />
         <e p="Role.cs" t="Include" />
+        <e p="SeedData.cs" t="Include" />
       </e>
       <e p="mysql-phpmyadmin.yml" t="Include" />
       <e p="obj" t="ExcludeRecursive">
@@ -46,9 +48,12 @@
       <e p="Views" t="Include">
         <e p="_ViewImports.cshtml" t="Include" />
         <e p="_ViewStart.cshtml" t="Include" />
+        <e p="Developer" t="Include">
+          <e p="AddOrEdit.cshtml" t="Include" />
+          <e p="Index.cshtml" t="Include" />
+        </e>
         <e p="Home" t="Include">
           <e p="Index.cshtml" t="Include" />
-          <e p="Privacy.cshtml" t="Include" />
         </e>
         <e p="Shared" t="Include">
           <e p="_Layout.cshtml" t="Include" />

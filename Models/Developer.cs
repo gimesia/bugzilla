@@ -1,9 +1,11 @@
-﻿namespace bugzilla.Models
+﻿using System;
+
+namespace bugzilla.Models
 {
     public class Developer
     {
-        public int Id { get; set; }
-        public int RoleId { get; set; }
+        public Guid Id { get; set; }
+        public Role Role { get; set; }
         public string Name { get; set; }
     }
 }

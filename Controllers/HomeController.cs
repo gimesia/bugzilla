@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using bugzilla.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace bugzilla.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+
+        public IAsyncEnumerable<Role> Roles { get; set; }
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -23,9 +26,9 @@ namespace bugzilla.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Login(string name)
         {
-            return View();
+            return RedirectToAction("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

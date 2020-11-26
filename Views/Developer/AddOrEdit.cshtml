@@ -1,0 +1,43 @@
+﻿@model bugzilla.Models.Developer
+
+@{
+    ViewData["Title"] = "Add Or Edit";
+}
+
+<h4>Developer Form</h4>
+<hr/>
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="AddOrEdit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id"/>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control"/>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="Role" class="control-label"></label>
+                    <input asp-for="Role" class="form-control"/>
+                    <span asp-validation-for="Role" class="text-danger"></span>
+                </div>
+                <select>
+                    @foreach (var role in (IEnumerable<Role>) ViewData["roles"])
+                    {
+                      <option>@role.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <input type="submit" value="Submit" class="btn btn-primary btn-block"/>
+                </div>
+                <div class="form-group col-md-6">
+                    <a asp-action="Index" class="btn btn-secondary btn-block"><i class="fa fa-table"></i> Back to List</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
