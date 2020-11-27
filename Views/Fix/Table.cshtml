@@ -1,0 +1,79 @@
+﻿@model IEnumerable<bugzilla.Models.Fix>
+
+@{
+    ViewData["Title"] = "Fixes";
+}
+<html>
+
+<head>
+    <title>Fixes</title>
+</head>
+<body>
+<div>
+    <form asp-controller="Review" asp-action="Table" asp-route-fixerName="">
+        <label for="fixer">Fix made by:</label>
+        <select id="fixer" name="fixer" class="mr-4">
+            <option value="*">all</option>
+            @foreach (var dev in ((IEnumerable<Fix>) ViewData["fixes"]).Select(fix => fix.Dev).Distinct())
+            {
+                <option value="@dev?.Name">
+                    @dev?.Name
+                </option>
+            }
+        </select>
+        <label for="bug">Fix made for bug:</label>
+        <select id="bug" name="bug" class="mr-4">
+            <option value="*">all</option>
+            @foreach (var bug in ((IEnumerable<Fix>) ViewData["fixes"]).Select(fix => fix.Bug).Distinct())
+            {
+                <option value="@bug?.Description">
+                    @bug?.Description
+                </option>
+            }
+        </select>
+        <button type="submit">
+            Filter!
+        </button>
+    </form>
+</div>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Id)*@id
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Bug.Description)*@Bug description
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Dev.Name)*@Fixed by
+        </th>
+        <th>
+            <a asp-action="Add" class="btn btn-outline-success">New Fix </a>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bug.Description) <span class="font-weight-light">by @item.Bug.Dev.Name</span>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dev.Name)
+            </td>
+            <td>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="text-danger ml-1" onclick="return confirm('Are you sure to delete this record?')">
+                    Delete
+                </a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+</body>
+</html>

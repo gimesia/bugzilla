@@ -1,0 +1,67 @@
+﻿@model IEnumerable<bugzilla.Models.Developer>
+
+@{
+    ViewData["Title"] = "Developers";
+}
+<html>
+
+<head>
+    <title>Developers</title>
+</head>
+<body>
+<form asp-action="Table">
+    <label for="roles">Role:</label>
+    <select id="roles" name="roles" class="mr-4">
+        <option value="*">all</option>
+        @foreach (var role in ((IEnumerable<Developer>) ViewData["devs"]).Select(dev => dev.Role).Distinct())
+        {
+            <option value="@role.Name">@role.Name</option>
+        }
+    </select>
+    <button type="submit">Filter!</button>
+</form>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Id)*@id
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Name)*@Name
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Role.Name)*@Role
+        </th>
+        <th>
+            <a asp-action="AddOrEdit" class="btn btn-outline-success">New Developer</a>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Role.Name)
+            </td>
+            
+            <td>
+                <a asp-action="AddOrEdit" asp-route-id="@item.Id">
+                    Edit
+                </a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="text-danger ml-1" onclick="return confirm('Are you sure to delete this record?')">
+                    Delete
+                </a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+</body>
+</html>

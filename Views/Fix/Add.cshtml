@@ -1,27 +1,25 @@
-﻿@model bugzilla.Models.Developer
+﻿@model bugzilla.Models.Fix
 
 @{
-    ViewData["Title"] = "Add Or Edit";
+    ViewData["Title"] = "Add";
 }
 
-<h4>Developer Form</h4>
+<h4>Fix Form</h4>
 <hr/>
 <div class="row">
     <div class="col-md-6">
-        <form asp-action="AddOrEdit">
+        <form asp-action="Add">
             <div class="form-group">
-                <label asp-for="Name" class="control-label">Name:</label>
-                <input asp-for="Name" class="form-control" placeholder="@Model.Name"/>
-                <span asp-validation-for="Name" class="text-danger"></span>
+                
             </div>
 
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label asp-for="Role">Roles</label>
-                    <select asp-for="Role" id="roles" name="roles">
-                        @foreach (var role in (IEnumerable<Role>) ViewData["roles"])
+                    <label for="roles">Fixed Bug:</label>
+                    <select id="bugs" name="bugs">
+                        @foreach (var fix in ((IEnumerable<Fix>) ViewData["fixes"]).Where(fix =>  fix.Bug.Closed!=true))
                         {
-                            <option value="@role.Name">@role.Name</option>
+                            <option>@fix.Bug.Description from @fix.Dev.Name</option>
                         }
                     </select>
                 </div>

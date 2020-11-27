@@ -13,17 +13,23 @@ namespace bugzilla.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public IAsyncEnumerable<Role> Roles { get; set; }
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly BugzillaDbContext _context;
+        
+        public HomeController(ILogger<HomeController> logger, BugzillaDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            ViewData["devs"] =
+                await _context
+                    .Developers
+                    .Include(review => review.Role)
+                    .ToListAsync();
+
+            return View(await _context.Developers.ToListAsync());
         }
 
         public IActionResult Login(string name)

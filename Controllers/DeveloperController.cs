@@ -17,23 +17,33 @@ namespace bugzilla.Controllers
             _context = context;
         }
 
-        // GET
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            ViewData["roles"] = await _context.Roles.ToListAsync();
+            return RedirectToAction("Table");
+        }
+
+        public async Task<IActionResult> Table()
+        {
+            ViewData["devs"] = await _context.Developers.Include(dev => dev.Role).ToListAsync();
             return View(await _context.Developers.ToListAsync());
         }
 
-        public async Task<IActionResult> AddOrEdit(Guid? id)
+        public async Task<IActionResult> AddOrEdit(Guid id)
         {
             ViewData["roles"] = await _context.Roles.ToListAsync();
-            if (id != null)
+            if (id != Guid.Empty)
             {
                 var dev = new Developer {Id = new Guid(), Name = "", Role = null};
                 return View(dev);
             }
             else
-                return View(_context.Developers.Find(id));
+                return View(await _context.Developers.FindAsync(id));
         }
+
+        public async Task<IActionResult> Delete(Guid guid)
+        {
+            return RedirectToAction("Index");
+        }
+
     }
 }
