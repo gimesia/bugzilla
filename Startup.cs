@@ -25,11 +25,24 @@ namespace bugzilla
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication("CookieAuth")
+                .AddCookie("CookieAuth", config =>
+                {
+                    config.Cookie.Name = "DevId.Cookie";
+                    config.LoginPath = "/Home/Index";
+                });
+
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(10); //You can set Time   
+            });
+
             services.AddControllersWithViews();
-            
+
             services.AddDbContext<BugzillaDbContext>
-            (optionsBuilder => optionsBuilder.UseMySQL(Configuration.
-                GetConnectionString("bugzilla")));
+                (optionsBuilder => optionsBuilder.UseMySQL(Configuration.GetConnectionString("bugzilla")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,12 +60,15 @@ namespace bugzilla
             }
 
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuthentication();
 
+            app.UseAuthorization();
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

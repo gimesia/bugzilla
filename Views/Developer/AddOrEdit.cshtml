@@ -8,20 +8,25 @@
 <hr/>
 <div class="row">
     <div class="col-md-6">
-        <form asp-action="AddOrEdit">
+        <h4>
+            <span class="font-weight-bold">Id: </span>@Model.Id
+        </h4>
+        <form asp-action="AddOrEditDb">
             <div class="form-group">
-                <label asp-for="Name" class="control-label">Name:</label>
-                <input asp-for="Name" class="form-control" placeholder="@Model.Name"/>
+                <input type="hidden" asp-for="Id" id="id" name="id"/>
+                <label for="name" class="control-label">Name:</label>
+                <input asp-for="Name" id="name" name="name" class="form-control" placeholder="@Model.Name"/>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
 
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label asp-for="Role">Roles</label>
-                    <select asp-for="Role" id="roles" name="roles">
+                    <label for="roles">Roles</label>
+                   @*TODO: show current role as default!*@
+                    <select asp-for="@Model.Role" id="roles" name="role">
                         @foreach (var role in (IEnumerable<Role>) ViewData["roles"])
                         {
-                            <option value="@role.Name">@role.Name</option>
+                            <option value="@role.Id">@role.Name</option>
                         }
                     </select>
                 </div>

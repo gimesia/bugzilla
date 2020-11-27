@@ -5,26 +5,30 @@
 <hr/>
 <div class="row">
     <div class="col-md-6">
+        <h4>
+            <span class="font-weight-bold">Id: </span>@Model.Id
+        </h4>
         <form asp-action="AddOrEdit">
             <div class="form-group">
                 <label class="control-label">Approved:</label>
                 <br>
-                <input asp-for="Approved" type="radio" id="closed" value="open">
-                <label for="closed">Closed</label>
+                <input asp-for="Approved" type="radio" id="approved" value="true">
+                <label for="approved">Approved</label>
                 <br>
-                <input asp-for="Approved" type="radio" id="open" value="false">
-                <label for="open">Open</label>
+                <input asp-for="Approved" type="radio" id="rejected" value="false">
+                <label for="rejected">Rejected</label>
                 <br>
             </div>
             <div class="form-group">
-                <select>
+                <label for="fix">Fix:</label>
+                <select id="fix" name="fix">
                     @foreach (var fix in (IEnumerable<Fix>) ViewData["fixes"])
                     {
-                        <option value="@fix.Id">@fix.Dev?.Name 's @fix.Bug?.Description BUG</option>
+                        <option value="@fix.Id">@fix.Dev?.Name</option>
                     }
                 </select>
             </div>
-            
+
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <input type="submit" value="Submit" class="btn btn-primary btn-block"/>

@@ -35,13 +35,13 @@
             @*@Html.DisplayNameFor(model => model.Id)*@id
         </th>
         <th>
-            @*@Html.DisplayNameFor(model => model.Description)*@description
+            @*@Html.DisplayNameFor(model => model.Description)*@Description
         </th>
         <th>
             @*@Html.DisplayNameFor(model => model.Dev.Name)*@Issued by
         </th>
         <th>
-            @*@Html.DisplayNameFor(model => model.Closed)*@closed
+            @*@Html.DisplayNameFor(model => model.Closed)*@Closed
         </th>
         <th>
             <a asp-action="AddOrEdit" class="btn btn-outline-success">New Bug</a>
@@ -65,10 +65,10 @@
                 @Html.DisplayFor(modelItem => item.Closed)
             </td>
             <td>
-                <a asp-action="AddOrEdit" asp-route-id="@item.Id">
+                <a asp-controller="Bug" asp-action="AddOrEdit" asp-route-guid="@item.Id">
                     Edit
                 </a>
-                <a asp-action="Delete" asp-route-id="@item.Id" class="text-danger ml-1" onclick="return confirm('Are you sure to delete this record?')">
+                <a asp-action="Delete" asp-route-guid="@item.Id" class="text-danger ml-1" onclick="return confirm('Are you sure to delete this record?')">
                   Delete
                 </a>
             </td>

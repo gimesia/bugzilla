@@ -1,11 +1,12 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace bugzilla.Models
 {
     public class Developer
     {
-        public Guid Id { get; set; }
-        public Role Role { get; set; }
+        [Key] public Guid Id { get; set; }
+        [Required] public Role Role { get; set; }
         public string Name { get; set; }
     }
 }

@@ -8,10 +8,15 @@
 <hr/>
 <div class="row">
     <div class="col-md-6">
-        <form asp-action="AddOrEdit">
+        <h4>
+            <span class="font-weight-bold">Id: </span>@Model.Id<br>
+            <span class="h6">@Model.Description</span>
+        </h4>
+        <form asp-action="AddOrEditDb">
             <div class="form-group">
+                <input type="hidden" asp-for="Id" id="id" name="id"/>
                 <label asp-for="Description" class="control-label">Description: </label>
-                <input asp-for="Description" class="form-control" placeholder="@Model.Description"/> 
+                <input asp-for="Description" id="description" name="description" class="form-control" placeholder="@Model.Description"/>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-row">

@@ -30,6 +30,7 @@ namespace bugzilla.Migrations
                         .HasColumnType("text");
 
                     b.Property<byte[]>("DevId")
+                        .IsRequired()
                         .HasColumnType("varbinary(16)");
 
                     b.HasKey("Id");
@@ -49,6 +50,7 @@ namespace bugzilla.Migrations
                         .HasColumnType("text");
 
                     b.Property<byte[]>("RoleId")
+                        .IsRequired()
                         .HasColumnType("varbinary(16)");
 
                     b.HasKey("Id");
@@ -65,9 +67,11 @@ namespace bugzilla.Migrations
                         .HasColumnType("varbinary(16)");
 
                     b.Property<byte[]>("BugId")
+                        .IsRequired()
                         .HasColumnType("varbinary(16)");
 
                     b.Property<byte[]>("DevId")
+                        .IsRequired()
                         .HasColumnType("varbinary(16)");
 
                     b.HasKey("Id");
@@ -89,9 +93,11 @@ namespace bugzilla.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<byte[]>("DevId")
+                        .IsRequired()
                         .HasColumnType("varbinary(16)");
 
                     b.Property<byte[]>("FixId")
+                        .IsRequired()
                         .HasColumnType("varbinary(16)");
 
                     b.HasKey("Id");
@@ -110,6 +116,7 @@ namespace bugzilla.Migrations
                         .HasColumnType("varbinary(16)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -121,36 +128,48 @@ namespace bugzilla.Migrations
                 {
                     b.HasOne("bugzilla.Models.Developer", "Dev")
                         .WithMany()
-                        .HasForeignKey("DevId");
+                        .HasForeignKey("DevId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("bugzilla.Models.Developer", b =>
                 {
                     b.HasOne("bugzilla.Models.Role", "Role")
                         .WithMany()
-                        .HasForeignKey("RoleId");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("bugzilla.Models.Fix", b =>
                 {
                     b.HasOne("bugzilla.Models.Bug", "Bug")
                         .WithMany()
-                        .HasForeignKey("BugId");
+                        .HasForeignKey("BugId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("bugzilla.Models.Developer", "Dev")
                         .WithMany()
-                        .HasForeignKey("DevId");
+                        .HasForeignKey("DevId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("bugzilla.Models.Review", b =>
                 {
                     b.HasOne("bugzilla.Models.Developer", "Dev")
                         .WithMany()
-                        .HasForeignKey("DevId");
+                        .HasForeignKey("DevId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("bugzilla.Models.Fix", "Fix")
                         .WithMany()
-                        .HasForeignKey("FixId");
+                        .HasForeignKey("FixId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -49,13 +49,13 @@ public static class SeedData
         var devs = new List<Developer>();
         var rnd = new Random();
 
-        foreach (var i in Enumerable.Range(1, 7))
+        foreach (var i in Enumerable.Range(1, 15))
         {
             devs.Add(new Developer
             {
                 Id = Guid.NewGuid(),
                 Name = GetRandomName(),
-                Role = i == 1 ? lead : roles[rnd.Next(1, roles.Count - 1)]
+                Role = i == 1 ? lead : roles[rnd.Next(roles.Count)]
             });
         }
 
@@ -88,10 +88,26 @@ public static class SeedData
             "Kocsis",
             "Kecskes",
             "Lassu",
-            "Racz"
+            "Racz",
+            "Sztrepcsik",
+            "Forro",
+            "Rokus",
+            "Erelyes",
+            "Szundi",
+            "Csizmadia",
+            "Oltvany",
+            "Redei",
+            "Eross",
+            "Hajnal"
         };
         var firstNames = new string[]
         {
+            "Endre",
+            "Hanga",
+            "Pali",
+            "Fiona",
+            "Luis",
+            "Lujza",
             "Veca",
             "Tibi",
             "Lajos",
@@ -107,7 +123,7 @@ public static class SeedData
             "Vazul"
         };
         var rnd = new Random();
-        return firstNames[rnd.Next(0, firstNames.Length - 1)] + " " +lastNames[rnd.Next(0, lastNames.Length - 1)];
+        return firstNames[rnd.Next(firstNames.Length)] + " " +lastNames[rnd.Next(lastNames.Length)];
     }
 
     private static List<Bug> GetRandomBugs(List<Developer> devs)
@@ -129,7 +145,21 @@ public static class SeedData
             "Nem működik semmi",
             "Nem működik az életem",
             "Nem működik a gépem",
-            "Nem működik a program"
+            "Nem működik a program",
+            "Hiányzik egy karakter",
+            "Hiányzik egy sor",
+            "Hiányzik egy programrészlet",
+            "Hiányzik egy osztály",
+            "Hiányzik egy import",
+            "Hiányzik egy export",
+            "Hiányzik pár karakter",
+            "Hiányzik pár sor",
+            "Hiányzik pár programrészlet",
+            "Hiányzik pár osztály",
+            "Hiányzik pár import",
+            "Hiányzik pár export",
+            "Csúnya a kód",
+            "Nagyon csúnya a kód"
         };
 
         var rnd = new Random();
@@ -138,8 +168,8 @@ public static class SeedData
         {
             bugs.Add(new Bug
             {
-                Dev = devs[rnd.Next(0, devs.Count - 1)], Closed = rnd.Next() % 5 != 0,
-                Description = descriptions[rnd.Next(0, descriptions.Length - 1)], Id = Guid.NewGuid()
+                Dev = devs[rnd.Next(0, devs.Count - 1)], Closed = rnd.Next() % 3 == 0,
+                Description = descriptions[rnd.Next(descriptions.Length)], Id = Guid.NewGuid()
             });
         }
         return bugs;
@@ -150,10 +180,10 @@ public static class SeedData
         var rnd = new Random();
         var fixes = new List<Fix>();
         
-        foreach (var i in Enumerable.Range(0, 50))
+        foreach (var i in Enumerable.Range(0, 25))
         {
             fixes.Add(new Fix
-                {Id = Guid.NewGuid(), Bug = bugs[rnd.Next(0, bugs.Count - 1)], Dev = devs[rnd.Next(0, devs.Count - 1)]});
+                {Id = Guid.NewGuid(), Bug = bugs[rnd.Next(bugs.Count)], Dev = devs[rnd.Next(devs.Count)]});
         }
         return fixes;
     }
@@ -166,8 +196,8 @@ public static class SeedData
         {
             reviews.Add(new Review
             {
-                Fix = fixes[i], Approved = rnd.Next() % 5 != 0, Id = Guid.NewGuid(),
-                Dev = devs[rnd.Next(0, devs.Count - 1)]
+                Fix = fixes[i], Approved = rnd.Next() % 2 == 0, Id = Guid.NewGuid(),
+                Dev = devs[rnd.Next(devs.Count)]
             });
         }
 

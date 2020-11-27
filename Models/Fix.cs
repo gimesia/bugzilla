@@ -5,9 +5,8 @@ namespace bugzilla.Models
 {
     public class Fix
     {
-
-        public Guid Id { get; set; }
-        public Bug Bug { get; set; }
-        public Developer Dev { get; set; }
+        [Key] public Guid Id { get; set; }
+        [Required] public Bug Bug { get; set; }
+        [Required] public Developer Dev { get; set; }
     }
 }

@@ -44,10 +44,10 @@
             @*@Html.DisplayNameFor(model => model.Id)*@id
         </th>
         <th>
-            @*@Html.DisplayNameFor(model => model.Dev.Name)*@Reviewed By
+            @*@Html.DisplayNameFor(model => model.Fix.Id)*@Fix made by
         </th>
         <th>
-            @*@Html.DisplayNameFor(model => model.Fix.Id)*@fixId
+            @*@Html.DisplayNameFor(model => model.Dev.Name)*@Reviewed By
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Approved)
@@ -65,19 +65,19 @@
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Dev.Name)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Fix.Dev.Name)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Dev.Name)
+            </td>
+           <td>
                 @Html.DisplayFor(modelItem => item.Approved)
             </td>
             <td>
-                <a asp-controller="Review" asp-action="AddOrEdit" asp-route-id="@item.Id">
+                <a asp-controller="Review" asp-action="AddOrEdit" asp-route-guid="@item.Id">
                     Edit
                 </a>
-                <a asp-controller="Review" asp-action="Delete" asp-route-id="@item.Id" class="text-danger ml-1" onclick="return confirm('Are you sure to delete this record?')" >
+                <a asp-controller="Review" asp-action="Delete" asp-route-guid="@item.Id" class="text-danger ml-1" onclick="return confirm('Are you sure to delete this record?')" >
                     Delete
                 </a>
             </td>

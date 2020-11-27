@@ -52,10 +52,10 @@
             </td>
             
             <td>
-                <a asp-action="AddOrEdit" asp-route-id="@item.Id">
+                <a asp-action="AddOrEdit" asp-route-guid="@item.Id">
                     Edit
                 </a>
-                <a asp-action="Delete" asp-route-id="@item.Id" class="text-danger ml-1" onclick="return confirm('Are you sure to delete this record?')">
+                <a asp-action="Delete" asp-route-guid="@item.Id" class="text-danger ml-1" onclick="return confirm('Are you sure to delete this record?')">
                     Delete
                 </a>
             </td>
