@@ -11,26 +11,32 @@
 </head>
 <body>
 <div>
-    <form asp-controller="Review" asp-action="Table" asp-route-fixerName="">
+    <form asp-action="Table">
         <label for="reviewer">Review made by:</label>
         <select id="reviewer" name="reviewer" class="mr-4">
-            <option value="*">all</option>
+            <option value="@Guid.Empty">all</option>
             @foreach (var dev in ((IEnumerable<Review>) ViewData["reviews"]).Select(review => review.Dev).Distinct())
             {
-                <option value="@dev?.Name">
+                <option value="@dev?.Id">
                     @dev?.Name
                 </option>
             }
         </select>
         <label for="fixer">Fix made by:</label>
         <select id="fixer" name="fixer" class="mr-4">
-            <option value="*">all</option>
+            <option value="@Guid.Empty">all</option>
             @foreach (var dev in ((IEnumerable<Review>) ViewData["reviews"]).Select(review => review.Fix?.Dev).Distinct())
             {
-                <option value="@dev?.Name">
+                <option value="@dev?.Id">
                     @dev?.Name
                 </option>
             }
+        </select>
+        <label for="approved">Closed:</label>
+        <select id="approved" name="approved" class="mr-4">
+            <option value="*">all</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
         </select>
         <button type="submit">
             Filter!
@@ -70,14 +76,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Dev.Name)
             </td>
-           <td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Approved)
             </td>
             <td>
                 <a asp-controller="Review" asp-action="AddOrEdit" asp-route-guid="@item.Id">
                     Edit
                 </a>
-                <a asp-controller="Review" asp-action="Delete" asp-route-guid="@item.Id" class="text-danger ml-1" onclick="return confirm('Are you sure to delete this record?')" >
+                <a asp-controller="Review" asp-action="Delete" asp-route-id="@item.Id" class="text-danger ml-1" onclick="return confirm('Are you sure to delete this record?')">
                     Delete
                 </a>
             </td>

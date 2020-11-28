@@ -10,12 +10,12 @@
 </head>
 <body>
 <form asp-action="Table">
-    <label for="roles">Role:</label>
-    <select id="roles" name="roles" class="mr-4">
+    <label for="role">Role:</label>
+    <select id="role" name="role" class="mr-4">
         <option value="*">all</option>
         @foreach (var role in ((IEnumerable<Developer>) ViewData["devs"]).Select(dev => dev.Role).Distinct())
         {
-            <option value="@role.Name">@role.Name</option>
+            <option value="@role.Id">@role.Name</option>
         }
     </select>
     <button type="submit">Filter!</button>

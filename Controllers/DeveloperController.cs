@@ -24,10 +24,12 @@ namespace bugzilla.Controllers
             return RedirectToAction("Table");
         }
 
-        public async Task<IActionResult> Table()
+        public async Task<IActionResult> Table(Guid? role)
         {
             ViewData["devs"] = await _context.Developers.Include(dev => dev.Role).ToListAsync();
-            return View(await _context.Developers.ToListAsync());
+            return role == null
+                ? View(await _context.Developers.ToListAsync())
+                : View(await _context.Developers.Where(developer => developer.Role.Id == role).ToListAsync());
         }
 
         public async Task<IActionResult> AddOrEdit(Guid? guid)
@@ -74,7 +76,7 @@ namespace bugzilla.Controllers
                 developerToUpdate.Name = name;
                 developerToUpdate.Role = await _context.Roles.FindAsync(role);
             }
-            
+
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using bugzilla.Models;
@@ -23,10 +25,21 @@ namespace bugzilla.Controllers
             return RedirectToAction("Table");
         }
 
-        public async Task<IActionResult> Table(string? devName, string? bugDesc)
+        public async Task<IActionResult> Table(Guid? fixer, Guid? bug)
         {
-            ViewData["fixes"] = await _context.Fixes.Include(fix => fix.Bug).Include(fix => fix.Dev).ToListAsync();
-            return View(await _context.Fixes.ToListAsync());
+            ViewData["fixes"] = await _context.Fixes
+                .Include(fix => fix.Bug)
+                .Include(fix => fix.Bug.Dev)
+                .Include(fix => fix.Dev).ToListAsync();
+            if (fixer == null || bug == null)
+                return View(await _context.Fixes.ToListAsync());
+
+            var fixes = (IEnumerable<Fix>) await _context.Fixes.ToListAsync();
+
+            fixes = bug == Guid.Empty ? fixes : fixes.Where(fix => fix.Bug.Id == bug);
+            fixes = fixer == Guid.Empty ? fixes : fixes.Where(fix => fix.Dev.Id == fixer);
+
+            return View(fixes);
         }
 
         public async Task<IActionResult> Add()
@@ -41,17 +54,17 @@ namespace bugzilla.Controllers
         {
             var developer = await _context.Developers.FindAsync(dev);
             var bugger = await _context.Bugs.FindAsync(bug);
-            var fix = new Fix { Bug = bugger, Dev = developer, Id = id};
+            var fix = new Fix {Bug = bugger, Dev = developer, Id = id};
 
             _context.Fixes.Add(fix);
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Delete(Guid guid)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            var fix = await _context.Fixes.FirstOrDefaultAsync(i => i.Id == guid);
+            var fix = await _context.Fixes.FindAsync(id);
             if (fix == null)
             {
                 return RedirectToAction("Index");

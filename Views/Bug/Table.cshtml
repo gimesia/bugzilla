@@ -12,17 +12,17 @@
 <form asp-action="Table">
     <label for="dev">Issued by:</label>
     <select id="dev" name="dev" class="mr-4">
-        <option value="*">all</option>
+        <option value="@Guid.Empty">all</option>
         @foreach (var dev in ((IEnumerable<Bug>) ViewData["bugs"]).Select(bug => bug.Dev).Distinct())
         {
-            <option value="@dev?.Name">@dev?.Name</option>
+            <option value="@dev?.Id">@dev?.Name</option>
         }
     </select>
     <label for="closed">Closed:</label>
     <select id="closed" name="closed" class="mr-4">
         <option value="*">all</option>
-        <option value="true">Closed</option>
-        <option value="false">Open</option>
+        <option value="closed">Closed</option>
+        <option value="open">Open</option>
     </select>
     <button type="submit">
         Filter!

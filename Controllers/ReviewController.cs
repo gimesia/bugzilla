@@ -6,6 +6,7 @@ using bugzilla.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Crypto.Digests;
 
 namespace bugzilla.Controllers
 {
@@ -25,77 +26,54 @@ namespace bugzilla.Controllers
         }
 
         // GET
-        public async Task<IActionResult> Table(string? fixerName, string? reviewerName)
+        public async Task<IActionResult> Table(Guid? reviewer, Guid? fixer, string? approved)
         {
-            if (fixerName == null && reviewerName == null)
-            {
-                ViewData["reviews"] =
-                    await _context
-                        .Reviews
-                        .Include(review => review.Dev)
-                        .Include(review => review.Fix)
-                        .ToListAsync();
-
+            ViewData["reviews"] = await _context.Reviews
+                .Include(i => i.Dev)
+                .Include(i => i.Fix)
+                .Include(i => i.Fix.Dev)
+                .ToListAsync();
+            if (reviewer == null || fixer == null || approved == null)
                 return View(await _context.Reviews.ToListAsync());
-            }
-            else
+
+            var reviews = (IEnumerable<Review>) await _context.Reviews
+                .Include(i => i.Dev)
+                .Include(i => i.Fix)
+                .ToListAsync();
+
+            reviews = reviewer == Guid.Empty
+                ? reviews
+                : reviews.Where(review => review.Dev.Id == reviewer);
+
+            reviews = fixer == Guid.Empty
+                ? reviews
+                : reviews.Where(review => review.Fix.Dev.Id == fixer);
+
+            switch (approved)
             {
-                if (fixerName != "*" && reviewerName != "*")
+                case "approved":
                 {
-                    ViewData["reviews"] =
-                        await _context
-                            .Reviews
-                            .Where(review => review.Dev.Name.Equals(reviewerName))
-                            .Where(review => review.Fix.Dev.Name.Equals(fixerName))
-                            .Include(review => review.Dev)
-                            .Include(review => review.Fix)
-                            .ToListAsync();
-
-                    return View(await _context.Reviews.ToListAsync());
+                    reviews = reviews.Where(review => review.Approved == true);
+                    break;
                 }
-
-                else if (fixerName != "*" && reviewerName == "*")
+                case "rejected":
                 {
-                    ViewData["reviews"] =
-                        await _context
-                            .Reviews
-                            .Where(review => review.Fix.Dev.Name.Equals(fixerName))
-                            .Include(review => review.Dev)
-                            .Include(review => review.Fix)
-                            .ToListAsync();
-
-                    return View(await _context.Reviews.ToListAsync());
+                    reviews = reviews.Where(review => review.Approved == false);
+                    break;
                 }
-
-                else if (fixerName == "*" && reviewerName != "*")
-                {
-                    ViewData["reviews"] =
-                        await _context
-                            .Reviews
-                            .Where(review => review.Dev.Name.Equals(reviewerName))
-                            .Include(review => review.Dev)
-                            .Include(review => review.Fix)
-                            .ToListAsync();
-
-                    return View(await _context.Reviews.ToListAsync());
-                }
+                default: break;
             }
 
-            ViewData["reviews"] =
-                await _context
-                    .Reviews
-                    .Include(review => review.Dev)
-                    .Include(review => review.Fix)
-                    .ToListAsync();
-
-            return View(await _context.Reviews.ToListAsync());
+            return View(reviews);
         }
 
         public async Task<IActionResult> AddOrEdit(Guid? guid)
         {
-            ViewData["devLeads"] = await _context.Developers .Include(i=>i.Role).Where(developer => developer.Role.Name == "Dev Lead")
-               .ToListAsync();
-            ViewData["fixes"] = await _context.Fixes.Include(i=>i.Bug).Where(i => _context.Reviews.Select(i=>i.Fix.Id).Contains(i.Id)).ToListAsync();
+            ViewData["devLeads"] = await _context.Developers.Include(i => i.Role)
+                .Where(developer => developer.Role.Name == "Dev Lead")
+                .ToListAsync();
+            ViewData["fixes"] = await _context.Fixes.Include(i => i.Bug)
+                .Where(i => _context.Reviews.Select(item => item.Fix.Id).Contains(i.Id)).ToListAsync();
             if (guid != null) return View(await _context.Reviews.FirstOrDefaultAsync(i => i.Id == guid));
             var rev = new Review {Id = Guid.NewGuid(), Approved = false, Dev = null, Fix = null};
             return View(rev);
@@ -105,7 +83,7 @@ namespace bugzilla.Controllers
         {
             var reviewToUpdate = await _context.Reviews.FindAsync(id);
             var developer = await _context.Developers.FindAsync(dev);
-            var fixxer = await _context.Fixes.FindAsync(fix); 
+            var fixxer = await _context.Fixes.FindAsync(fix);
             if (reviewToUpdate == null)
             {
                 var review = new Review
@@ -144,11 +122,6 @@ namespace bugzilla.Controllers
             {
                 return RedirectToAction("Index");
             }
-        }
-
-        public IActionResult Filter(string fixerName, string reviewerName)
-        {
-            return RedirectToAction("Table");
         }
     }
 }

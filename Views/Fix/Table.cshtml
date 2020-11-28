@@ -10,23 +10,23 @@
 </head>
 <body>
 <div>
-    <form asp-controller="Review" asp-action="Table" asp-route-fixerName="">
+    <form asp-action="Table">
         <label for="fixer">Fix made by:</label>
         <select id="fixer" name="fixer" class="mr-4">
-            <option value="*">all</option>
+            <option value="@Guid.Empty">all</option>
             @foreach (var dev in ((IEnumerable<Fix>) ViewData["fixes"]).Select(fix => fix.Dev).Distinct())
             {
-                <option value="@dev?.Name">
+                <option value="@dev?.Id">
                     @dev?.Name
                 </option>
             }
         </select>
         <label for="bug">Fix made for bug:</label>
         <select id="bug" name="bug" class="mr-4">
-            <option value="*">all</option>
+            <option value="@Guid.Empty">all</option>
             @foreach (var bug in ((IEnumerable<Fix>) ViewData["fixes"]).Select(fix => fix.Bug).Distinct())
             {
-                <option value="@bug?.Description">
+                <option value="@bug?.Id">
                     @bug?.Description
                 </option>
             }
