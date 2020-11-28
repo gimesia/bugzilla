@@ -32,8 +32,9 @@ namespace bugzilla.Controllers
 
         public async Task<IActionResult> AddOrEdit(Guid? guid)
         {
-            //TODO bug models description doesnt show
+
             ViewData["bug"] = await _context.Bugs.FirstOrDefaultAsync(i => i.Id == guid);
+            ViewData["devs"] = await _context.Developers.ToListAsync();
             return guid != null
                 ? View(await _context.Bugs.FirstOrDefaultAsync(i => i.Id == guid))
                 : View(new Bug {Id = Guid.NewGuid(), Description = "", Closed = false, Dev = null});
@@ -59,27 +60,28 @@ namespace bugzilla.Controllers
                 return RedirectToAction("Index");
             }
         }
-        /*public async Task<IActionResult> AddOrEditDb(Guid id, string description)
+        
+        public async Task<IActionResult> AddOrEditDb(Guid id, Guid dev, string description, bool closed)
         {
-            var boh = Request.Cookies["DevId.Cookie"];
             var bugToUpdate = await _context.Bugs.FindAsync(id);
-
+            var developer = await _context.Developers.FindAsync(dev);
             if (bugToUpdate == null)
             {
                 
-                bugToUpdate = new Bug{Id = id, Description = description, Dev = await _context.Developers.FindAsync()};
-                await _context.Developers.AddAsync(bugToUpdate);
+                bugToUpdate = new Bug{Id = id, Description = description, Dev = developer, Closed = closed};
+                await _context.Bugs.AddAsync(bugToUpdate);
             }
             else
             {
-                bugToUpdate.Name = name;
-                bugToUpdate.Role = await _context.Roles.FindAsync(role);
+                bugToUpdate.Description = description;
+                bugToUpdate.Dev = developer;
+                bugToUpdate.Closed = closed;
             }
             
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
-        }*/
+        }
 
     }
 }

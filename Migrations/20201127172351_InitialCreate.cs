@@ -12,7 +12,7 @@ namespace bugzilla.Migrations
                 columns: table => new
                 {
                     Id = table.Column<byte[]>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -24,7 +24,7 @@ namespace bugzilla.Migrations
                 columns: table => new
                 {
                     Id = table.Column<byte[]>(nullable: false),
-                    RoleId = table.Column<byte[]>(nullable: true),
+                    RoleId = table.Column<byte[]>(nullable: false),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -35,7 +35,7 @@ namespace bugzilla.Migrations
                         column: x => x.RoleId,
                         principalTable: "Roles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -43,7 +43,7 @@ namespace bugzilla.Migrations
                 columns: table => new
                 {
                     Id = table.Column<byte[]>(nullable: false),
-                    DevId = table.Column<byte[]>(nullable: true),
+                    DevId = table.Column<byte[]>(nullable: false),
                     Description = table.Column<string>(nullable: true),
                     Closed = table.Column<bool>(nullable: false)
                 },
@@ -55,7 +55,7 @@ namespace bugzilla.Migrations
                         column: x => x.DevId,
                         principalTable: "Developers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -63,8 +63,8 @@ namespace bugzilla.Migrations
                 columns: table => new
                 {
                     Id = table.Column<byte[]>(nullable: false),
-                    BugId = table.Column<byte[]>(nullable: true),
-                    DevId = table.Column<byte[]>(nullable: true)
+                    BugId = table.Column<byte[]>(nullable: false),
+                    DevId = table.Column<byte[]>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,13 +74,13 @@ namespace bugzilla.Migrations
                         column: x => x.BugId,
                         principalTable: "Bugs",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Fixes_Developers_DevId",
                         column: x => x.DevId,
                         principalTable: "Developers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -88,8 +88,8 @@ namespace bugzilla.Migrations
                 columns: table => new
                 {
                     Id = table.Column<byte[]>(nullable: false),
-                    FixId = table.Column<byte[]>(nullable: true),
-                    DevId = table.Column<byte[]>(nullable: true),
+                    FixId = table.Column<byte[]>(nullable: false),
+                    DevId = table.Column<byte[]>(nullable: false),
                     Approved = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -100,13 +100,13 @@ namespace bugzilla.Migrations
                         column: x => x.DevId,
                         principalTable: "Developers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Reviews_Fixes_FixId",
                         column: x => x.FixId,
                         principalTable: "Fixes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

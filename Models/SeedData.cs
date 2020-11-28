@@ -168,7 +168,7 @@ public static class SeedData
         {
             bugs.Add(new Bug
             {
-                Dev = devs[rnd.Next(0, devs.Count - 1)], Closed = rnd.Next() % 3 == 0,
+                Dev = devs[rnd.Next(0, devs.Count)], Closed = rnd.Next() % 3 == 0,
                 Description = descriptions[rnd.Next(descriptions.Length)], Id = Guid.NewGuid()
             });
         }

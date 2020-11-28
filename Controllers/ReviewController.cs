@@ -93,11 +93,37 @@ namespace bugzilla.Controllers
 
         public async Task<IActionResult> AddOrEdit(Guid? guid)
         {
-            ViewData["fixes"] = await _context.Fixes
-                .Where(fix => _context.Reviews.Select(i => i.Fix.Id).Contains(fix.Id)).ToListAsync();
+            ViewData["devLeads"] = await _context.Developers .Include(i=>i.Role).Where(developer => developer.Role.Name == "Dev Lead")
+               .ToListAsync();
+            ViewData["fixes"] = await _context.Fixes.Include(i=>i.Bug).Where(i => _context.Reviews.Select(i=>i.Fix.Id).Contains(i.Id)).ToListAsync();
             if (guid != null) return View(await _context.Reviews.FirstOrDefaultAsync(i => i.Id == guid));
             var rev = new Review {Id = Guid.NewGuid(), Approved = false, Dev = null, Fix = null};
             return View(rev);
+        }
+
+        public async Task<IActionResult> AddOrEditDb(Guid id, Guid dev, Guid fix, bool approved)
+        {
+            var reviewToUpdate = await _context.Reviews.FindAsync(id);
+            var developer = await _context.Developers.FindAsync(dev);
+            var fixxer = await _context.Fixes.FindAsync(fix); 
+            if (reviewToUpdate == null)
+            {
+                var review = new Review
+                {
+                    Approved = approved, Dev = developer, Fix = fixxer, Id = id
+                };
+                await _context.Reviews.AddAsync(review);
+            }
+            else
+            {
+                reviewToUpdate.Approved = approved;
+                reviewToUpdate.Dev = developer;
+                reviewToUpdate.Fix = fixxer;
+            }
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Delete(Guid guid)
@@ -116,8 +142,6 @@ namespace bugzilla.Controllers
             }
             catch (DbUpdateException e)
             {
-                //Log the error (uncomment ex variable name and write a log.)
-                Console.WriteLine(e);
                 return RedirectToAction("Index");
             }
         }

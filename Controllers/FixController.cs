@@ -21,18 +21,32 @@ namespace bugzilla.Controllers
         public IActionResult Index()
         {
             return RedirectToAction("Table");
-        }        
-        
+        }
+
         public async Task<IActionResult> Table(string? devName, string? bugDesc)
         {
-            ViewData["fixes"]= await _context.Fixes.Include(fix => fix.Bug).Include(fix => fix.Dev).ToListAsync();
+            ViewData["fixes"] = await _context.Fixes.Include(fix => fix.Bug).Include(fix => fix.Dev).ToListAsync();
             return View(await _context.Fixes.ToListAsync());
         }
 
         public async Task<IActionResult> Add()
         {
             ViewData["fixes"] = await _context.Fixes.Include(fix => fix.Bug).Include(fix => fix.Dev).ToListAsync();
+            ViewData["devs"] = await _context.Developers.ToListAsync();
+            ViewData["bugs"] = await _context.Bugs.ToListAsync();
             return View();
+        }
+
+        public async Task<IActionResult> AddDb(Guid id, Guid dev, Guid bug)
+        {
+            var developer = await _context.Developers.FindAsync(dev);
+            var bugger = await _context.Bugs.FindAsync(bug);
+            var fix = new Fix { Bug = bugger, Dev = developer, Id = id};
+
+            _context.Fixes.Add(fix);
+            
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Delete(Guid guid)

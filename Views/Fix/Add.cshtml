@@ -8,20 +8,30 @@
 <hr/>
 <div class="row">
     <div class="col-md-6">
-        <form asp-action="Add">
-            <div class="form-group">
-                
-            </div>
-
+        <form asp-action="AddDb">
             <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="roles">Fixed Bug:</label>
-                    <select id="bugs" name="bugs">
-                        @foreach (var fix in ((IEnumerable<Fix>) ViewData["fixes"]).Where(fix =>  fix.Bug.Closed!=true))
-                        {
-                            <option>@fix.Bug.Description from @fix.Dev.Name</option>
-                        }
-                    </select>
+                <div class="form-group">
+                    <div class="form-group col-md-6">
+                        <label for="roles">Fixed Bug:</label>
+                        <select asp-for="Bug.Id" id="bug" name="bug">
+                            @foreach (var bug in ((IEnumerable<Bug>) ViewData["bugs"]).Where(i => i.Closed != true))
+                            {
+                                <option value="@bug.Id">@bug.Description from @bug.Dev.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-group col-md-6">
+                        <label for="roles">Fixed By:</label>
+                        <select asp-for="Dev.Id" id="dev" name="dev">
+                            @foreach (var dev in ((IEnumerable<Developer>)
+                                ViewData["devs"]))
+                            {
+                                <option value="@dev.Id">@dev.Name</option>
+                            }
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="form-row">
