@@ -1,5 +1,5 @@
 # Bugzilla
-> A Szegedi Tudományegyetem Molekuláris Bionika szakos hallagatóinak az Adatbázisok kurzusra készített projektje.
+> A Szegedi Tudományegyetem Molekuláris Bionika szakos hallgatóinak az Adatbázisok kurzusra készített projektje.
 
 [![git](https://img.shields.io/badge/scm-git-f05032.svg?style=flat-square&logo=git)](https://git-scm.com)
 
