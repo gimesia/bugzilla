@@ -83,6 +83,7 @@ namespace bugzilla.Controllers
             ViewData["fixes"] = await _context.Fixes
                 .Include(i=>i.Bug)
                 .Include(i=>i.Bug.Dev)
+                .Include(i=>i.Dev)
                 .Where(i => _context.Reviews
                     .Include(item => item.Fix)
                     .Include(item => item.Fix.Dev)
