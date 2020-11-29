@@ -25,17 +25,17 @@
                 <select asp-for="Fix.Id" id="fix" name="fix">
                     @foreach (var fix in (IEnumerable<Fix>) ViewData["fixes"])
                     {
-                        <option value="@fix.Id">@fix.Bug.Description</option>
+                        <option value="@fix.Id">@fix.Bug.Description <span class="text-info">fixed by @fix.Dev.Name</span></option>
                     }
                 </select>
             </div>
             <div class="form-group">
                 <label class="control-label">Approved:</label>
                 <br>
-                <input asp-for="Approved" type="radio" id="approved" value="true">
+                <input asp-for="Approved" type="radio" id="approved" name="approved" value="true">
                 <label for="approved">Approved</label>
                 <br>
-                <input asp-for="Approved" type="radio" id="rejected" value="false">
+                <input asp-for="Approved" type="radio" id="rejected" name="approved" value="false">
                 <label for="rejected">Rejected</label>
                 <br>
             </div>

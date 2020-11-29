@@ -7,8 +7,8 @@
 <div class="text-center">
     <h1 class="display-4">Welcome to Bugzilla</h1>
 
-    <form asp-action="Secret">
-        <select id="devId" name="devId">
+    <form asp-action="Login">
+        <select id="id" name="id">
             @foreach (var dev in Model)
             {
                 <option value="@dev.Id">@dev.Name</option>

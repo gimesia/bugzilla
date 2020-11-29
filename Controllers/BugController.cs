@@ -28,7 +28,10 @@ namespace bugzilla.Controllers
 
         public async Task<IActionResult> Table(Guid? dev, string? closed)
         {
-            ViewData["bugs"] = await _context.Bugs.Include(bug => bug.Dev).ToListAsync();
+            ViewData["bugs"] = await _context.Bugs
+                .Include(bug => bug.Dev)
+                .Include(bug => bug.Dev.Role)
+                .ToListAsync();
             if (dev == null || closed == null)
                 return View(await _context.Bugs.ToListAsync());
 

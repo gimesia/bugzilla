@@ -29,7 +29,7 @@ public static class SeedData
 
             var roles = GetRandomRoles();
             var developers = GetRandomDevelopers(roles);
-            
+
             context.Roles.AddRange(roles);
             context.SaveChanges();
 
@@ -174,7 +174,7 @@ public static class SeedData
 
         var rnd = new Random();
         var bugs = new List<Bug>();
-        foreach (var i in Enumerable.Range(0, 50))
+        foreach (var i in Enumerable.Range(0, 65))
         {
             bugs.Add(new Bug
             {
@@ -191,7 +191,7 @@ public static class SeedData
         var rnd = new Random();
         var fixes = new List<Fix>();
 
-        foreach (var i in Enumerable.Range(0, 25))
+        foreach (var i in Enumerable.Range(0, 45))
         {
             fixes.Add(new Fix
                 {Id = Guid.NewGuid(), Bug = bugs[rnd.Next(bugs.Count)], Dev = devs[rnd.Next(devs.Count)]});
@@ -204,12 +204,14 @@ public static class SeedData
     {
         var reviews = new List<Review>();
         var rnd = new Random();
-        for (int i = 0; i < fixes.Count; i += 5)
+        for (int i = 0; i < fixes.Count; i += 4)
         {
+            var devLeads = devs.Where(dev => dev.Role.Name == "Dev Lead").ToList();
             reviews.Add(new Review
             {
                 Fix = fixes[i], Approved = rnd.Next() % 2 == 0, Id = Guid.NewGuid(),
-                Dev = devs[rnd.Next(devs.Count)]
+
+                Dev =  devLeads[rnd.Next(devLeads.Count)]
             });
         }
 

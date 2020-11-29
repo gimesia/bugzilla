@@ -41,14 +41,17 @@ namespace bugzilla.Controllers
         public async Task<IActionResult> Login(Guid id)
         {
             var developer = await _context.Developers.FindAsync(id);
+            if (developer == null)
+            {
+                return RedirectToAction("Index");
+            }
+            
             var role = _context.Roles
                 .Where(i => i.Id == _context.Developers
                 .Find(id).Role.Id)
                 .Select(i => i.Name)
                 .ToString();
             
-            if (developer != null)
-            {
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, developer.Name),
@@ -61,9 +64,8 @@ namespace bugzilla.Controllers
                 var userPrincipal = new ClaimsPrincipal(claimsIdentity);
 
                 await HttpContext.SignInAsync(userPrincipal);
-            }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Developer");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -75,10 +77,7 @@ namespace bugzilla.Controllers
         public async Task<IActionResult> Secret(Guid devId)
         {
             var developer = await _context.Developers.FindAsync(devId);
-            if (developer != null)
-            {
-                return View(developer);
-            }
+          
 
             return RedirectToAction("Index");
         }

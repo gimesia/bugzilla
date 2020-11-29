@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Fixes";
+
 }
 <html>
 
@@ -10,7 +11,7 @@
 </head>
 <body>
 <div>
-    <form asp-action="Table">
+    <form asp-action="Table" class="mb-4">
         <label for="fixer">Fix made by:</label>
         <select id="fixer" name="fixer" class="mr-4">
             <option value="@Guid.Empty">all</option>
@@ -31,7 +32,7 @@
                 </option>
             }
         </select>
-        <button type="submit">
+        <button type="submit" class="btn btn-outline-success">
             Filter!
         </button>
     </form>
@@ -43,10 +44,13 @@
             id
         </th>
         <th>
-           Bug description
+            Bug description
         </th>
         <th>
             Fixed by
+        </th>
+        <th>
+            Is approved
         </th>
         <th>
             <a asp-action="Add" class="btn btn-outline-success">New Fix </a>
@@ -57,7 +61,7 @@
     @foreach (var item in Model)
     {
         <tr>
-            <td>
+            <td style="font-size: 12px" class="text-info">
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
@@ -65,6 +69,10 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Dev.Name)
+                <p style="font-size: 10px" class="text-info text-capitalize">@item.Dev.Role.Name</p>
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => ((IEnumerable<Review>) ViewData["reviews"]).FirstOrDefault(i => item.Id == i.Fix.Id).Approved)
             </td>
             <td>
                 <a asp-action="Delete" asp-route-id="@item.Id" class="text-danger ml-1" onclick="return confirm('Are you sure to delete this record?')">

@@ -27,10 +27,14 @@ namespace bugzilla.Controllers
 
         public async Task<IActionResult> Table(Guid? fixer, Guid? bug)
         {
+            ViewData["reviews"] = await _context.Reviews.Include(i => i.Fix).ToListAsync();
             ViewData["fixes"] = await _context.Fixes
                 .Include(fix => fix.Bug)
                 .Include(fix => fix.Bug.Dev)
-                .Include(fix => fix.Dev).ToListAsync();
+                .Include(fix => fix.Bug.Dev.Role)
+                .Include(fix => fix.Dev)
+                .Include(fix => fix.Dev.Role)
+                .ToListAsync();
             if (fixer == null || bug == null)
                 return View(await _context.Fixes.ToListAsync());
 

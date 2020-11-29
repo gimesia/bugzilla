@@ -9,7 +9,7 @@
     <title>Developers</title>
 </head>
 <body>
-<form asp-action="Table">
+<form asp-action="Table" class="mb-4">
     <label for="role">Role:</label>
     <select id="role" name="role" class="mr-4">
         <option value="*">all</option>
@@ -18,16 +18,16 @@
             <option value="@role.Id">@role.Name</option>
         }
     </select>
-    <button type="submit">Filter!</button>
+    <button type="submit" class="btn btn-outline-success">Filter!</button>
 </form>
 <table class="table table-hover">
     <thead>
     <tr>
         <th>
-          id
+            id
         </th>
         <th>
-           Name
+            Name
         </th>
         <th>
             Role
@@ -41,7 +41,7 @@
     @foreach (var item in Model)
     {
         <tr>
-            <td>
+            <td style="font-size: 12px" class="text-info">
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
@@ -50,7 +50,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Role.Name)
             </td>
-            
+
             <td>
                 <a asp-action="AddOrEdit" asp-route-id="@item.Id">
                     Edit
