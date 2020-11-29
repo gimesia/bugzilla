@@ -24,13 +24,13 @@
     <thead>
     <tr>
         <th>
-            @*@Html.DisplayNameFor(model => model.Id)*@id
+          id
         </th>
         <th>
-            @*@Html.DisplayNameFor(model => model.Name)*@Name
+           Name
         </th>
         <th>
-            @*@Html.DisplayNameFor(model => model.Role.Name)*@Role
+            Role
         </th>
         <th>
             <a asp-action="AddOrEdit" class="btn btn-outline-success">New Developer</a>
@@ -52,10 +52,10 @@
             </td>
             
             <td>
-                <a asp-action="AddOrEdit" asp-route-guid="@item.Id">
+                <a asp-action="AddOrEdit" asp-route-id="@item.Id">
                     Edit
                 </a>
-                <a asp-action="Delete" asp-route-guid="@item.Id" class="text-danger ml-1" onclick="return confirm('Are you sure to delete this record?')">
+                <a asp-action="Delete" asp-route-id="@item.Id" class="text-danger ml-1" onclick="return confirm('Are you sure to delete this record?')">
                     Delete
                 </a>
             </td>

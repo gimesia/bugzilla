@@ -12,7 +12,7 @@
             <div class="form-row">
                 <div class="form-group">
                     <div class="form-group col-md-6">
-                        <label for="roles">Fixed Bug:</label>
+                        <label for="bug">Fixed Bug:</label>
                         <select asp-for="Bug.Id" id="bug" name="bug">
                             @foreach (var bug in ((IEnumerable<Bug>) ViewData["bugs"]).Where(i => i.Closed != true))
                             {
@@ -23,7 +23,7 @@
                 </div>
                 <div class="form-group">
                     <div class="form-group col-md-6">
-                        <label for="roles">Fixed By:</label>
+                        <label for="dev">Fixed By:</label>
                         <select asp-for="Dev.Id" id="dev" name="dev">
                             @foreach (var dev in ((IEnumerable<Developer>)
                                 ViewData["devs"]))

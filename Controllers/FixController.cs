@@ -50,16 +50,22 @@ namespace bugzilla.Controllers
             return View();
         }
 
-        public async Task<IActionResult> AddDb(Guid id, Guid dev, Guid bug)
+        public async Task<IActionResult> AddDb(Guid dev, Guid bug)
         {
             var developer = await _context.Developers.FindAsync(dev);
             var bugger = await _context.Bugs.FindAsync(bug);
-            var fix = new Fix {Bug = bugger, Dev = developer, Id = id};
+            var fix = new Fix {Bug = bugger, Dev = developer, Id = Guid.NewGuid()};
 
-            _context.Fixes.Add(fix);
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            try
+            {
+                await _context.Fixes.AddAsync(fix);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            catch (DbUpdateException e)
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         public async Task<IActionResult> Delete(Guid id)

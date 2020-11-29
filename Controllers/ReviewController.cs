@@ -83,12 +83,12 @@ namespace bugzilla.Controllers
         {
             var reviewToUpdate = await _context.Reviews.FindAsync(id);
             var developer = await _context.Developers.FindAsync(dev);
-            var fixxer = await _context.Fixes.FindAsync(fix);
+            var fixx = await _context.Fixes.FindAsync(fix);
             if (reviewToUpdate == null)
             {
                 var review = new Review
                 {
-                    Approved = approved, Dev = developer, Fix = fixxer, Id = id
+                    Approved = approved, Dev = developer, Fix = fixx, Id = id
                 };
                 await _context.Reviews.AddAsync(review);
             }
@@ -96,7 +96,7 @@ namespace bugzilla.Controllers
             {
                 reviewToUpdate.Approved = approved;
                 reviewToUpdate.Dev = developer;
-                reviewToUpdate.Fix = fixxer;
+                reviewToUpdate.Fix = fixx;
             }
 
             await _context.SaveChangesAsync();

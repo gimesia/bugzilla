@@ -10,6 +10,7 @@
         </h4>
         <form asp-action="AddOrEditDb">
             <div class="form-group">
+                <input type="hidden" asp-for="Id" id="id" name="id"/>
                 <label for="dev">Reviewed by:</label>
                 <select asp-for="Dev.Id" id="dev" name="dev">
                     @foreach (var dev in ((IEnumerable<Developer>)

@@ -47,13 +47,13 @@
     <thead>
     <tr>
         <th>
-            @*@Html.DisplayNameFor(model => model.Id)*@id
+            id
         </th>
         <th>
-            @*@Html.DisplayNameFor(model => model.Fix.Id)*@Fix made by
+            Fix made by
         </th>
         <th>
-            @*@Html.DisplayNameFor(model => model.Dev.Name)*@Reviewed By
+            Reviewed By
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Approved)
@@ -68,7 +68,7 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Id)
+                <span class="id"> @Html.DisplayFor(modelItem => item.Id)</span>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Fix.Dev.Name)

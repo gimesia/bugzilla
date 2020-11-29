@@ -32,17 +32,17 @@ namespace bugzilla.Controllers
                 : View(await _context.Developers.Where(developer => developer.Role.Id == role).ToListAsync());
         }
 
-        public async Task<IActionResult> AddOrEdit(Guid? guid)
+        public async Task<IActionResult> AddOrEdit(Guid? id)
         {
             ViewData["roles"] = await _context.Roles.ToListAsync();
-            if (guid != null) return View(await _context.Developers.FirstOrDefaultAsync(i => i.Id == guid));
+            if (id != null) return View(await _context.Developers.FindAsync(id));
             var dev = new Developer {Id = Guid.NewGuid(), Name = "", Role = null};
             return View(dev);
         }
 
-        public async Task<IActionResult> Delete(Guid guid)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            var developer = await _context.Developers.FirstOrDefaultAsync(i => i.Id == guid);
+            var developer = await _context.Developers.FirstOrDefaultAsync(i => i.Id == id);
             if (developer == null)
             {
                 return RedirectToAction("Index");
