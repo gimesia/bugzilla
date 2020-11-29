@@ -29,37 +29,28 @@ public static class SeedData
 
             var roles = GetRandomRoles();
             var developers = GetRandomDevelopers(roles);
-            var bugs = GetRandomBugs(developers);
-            var fixes = GetRandomFixes(bugs,developers);
-            var reviews = GetRandomReviews(fixes, developers);
-
+            
             context.Roles.AddRange(roles);
-            context.Developers.AddRange(developers);
-            context.Bugs.AddRange(bugs);
-            context.Fixes.AddRange(fixes);
-            context.Reviews.AddRange(reviews);
+            context.SaveChanges();
 
+            context.Developers.AddRange(developers);
+            context.SaveChanges();
+
+            var bugs = GetRandomBugs(context.Developers.ToList());
+
+            context.Bugs.AddRange(bugs);
+            context.SaveChanges();
+
+            var fixes = GetRandomFixes(context.Bugs.ToList(), context.Developers.ToList());
+
+            context.Fixes.AddRange(fixes);
+            context.SaveChanges();
+
+            var reviews = GetRandomReviews(context.Fixes.ToList(), context.Developers.ToList());
+
+            context.Reviews.AddRange(reviews);
             context.SaveChanges();
         }
-    }
-
-    private static List<Developer> GetRandomDevelopers(List<Role> roles)
-    {
-        var lead = roles[0];
-        var devs = new List<Developer>();
-        var rnd = new Random();
-
-        foreach (var i in Enumerable.Range(1, 15))
-        {
-            devs.Add(new Developer
-            {
-                Id = Guid.NewGuid(),
-                Name = GetRandomName(),
-                Role = i == 1 ? lead : roles[rnd.Next(roles.Count)]
-            });
-        }
-
-        return devs;
     }
 
     private static List<Role> GetRandomRoles()
@@ -123,7 +114,26 @@ public static class SeedData
             "Vazul"
         };
         var rnd = new Random();
-        return firstNames[rnd.Next(firstNames.Length)] + " " +lastNames[rnd.Next(lastNames.Length)];
+        return firstNames[rnd.Next(firstNames.Length)] + " " + lastNames[rnd.Next(lastNames.Length)];
+    }
+
+    private static List<Developer> GetRandomDevelopers(List<Role> roles)
+    {
+        var lead = roles[0];
+        var devs = new List<Developer>();
+        var rnd = new Random();
+
+        foreach (var i in Enumerable.Range(1, 15))
+        {
+            devs.Add(new Developer
+            {
+                Id = Guid.NewGuid(),
+                Name = GetRandomName(),
+                Role = i == 1 ? lead : roles[rnd.Next(roles.Count)]
+            });
+        }
+
+        return devs;
     }
 
     private static List<Bug> GetRandomBugs(List<Developer> devs)
@@ -172,6 +182,7 @@ public static class SeedData
                 Description = descriptions[rnd.Next(descriptions.Length)], Id = Guid.NewGuid()
             });
         }
+
         return bugs;
     }
 
@@ -179,12 +190,13 @@ public static class SeedData
     {
         var rnd = new Random();
         var fixes = new List<Fix>();
-        
+
         foreach (var i in Enumerable.Range(0, 25))
         {
             fixes.Add(new Fix
                 {Id = Guid.NewGuid(), Bug = bugs[rnd.Next(bugs.Count)], Dev = devs[rnd.Next(devs.Count)]});
         }
+
         return fixes;
     }
 
